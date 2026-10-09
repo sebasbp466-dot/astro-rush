@@ -1,0 +1,52 @@
+name: Compilar APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # también puedes lanzarlo a mano desde la pestaña Actions
+
+permissions:
+  contents: write # necesario para publicar el APK en Releases
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Compilar el APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Preparar el APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk astro-rush.apk
+
+      - name: Guardar el APK como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-rush-apk
+          path: astro-rush.apk
+
+      - name: Publicar en Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v1.0.${{ github.run_number }}
+        run: |
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" astro-rush.apk \
+            --target "$GITHUB_SHA" \
+            --title "Astro Rush build ${{ github.run_number }}" \
+            --notes "APK compilado automáticamente (commit ${GITHUB_SHA::7})."

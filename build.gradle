@@ -1,0 +1,4 @@
+// Archivo raíz: solo declara la versión del plugin de Android.
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+}

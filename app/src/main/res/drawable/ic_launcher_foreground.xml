@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- llama del motor -->
+    <path
+        android:fillColor="#FFFF9800"
+        android:pathData="M48,70 L54,88 L60,70 Z" />
+
+    <!-- cuerpo de la nave -->
+    <path
+        android:fillColor="#FF00E5FF"
+        android:pathData="M54,24 L74,72 L61,64 L54,68 L47,64 L34,72 Z" />
+
+    <!-- cabina -->
+    <path
+        android:fillColor="#FFE0F7FA"
+        android:pathData="M49,46 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0 Z" />
+</vector>
